@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 class SudokuSolver:
 
@@ -77,9 +78,10 @@ sudoku = np.array([[5,3,0,0,7,0,0,0,0],
 
 solver = SudokuSolver()
 solver.set_puzzle(sudoku)
+start = time.time()
 
 if solver.solve():
-    print("Found a solution for this sudoku:")
+    print("Found a solution for this sudoku in {}s:".format(time.time() - start))
     print(solver.get_puzzle())
 else:
     print("This sudoku has no solution!")
