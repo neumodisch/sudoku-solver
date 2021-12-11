@@ -23,13 +23,20 @@ class SudokuSolver:
             return False
         return True
 
-    def _chk_sudoku(self, sudoku):
+    def _chk_sudoku(self, sudoku, a, b):
+        # check the current row and column first
+        if self._chk_line(sudoku[a, :]) == False or self._chk_line(sudoku[:, b]) == False:
+            return False
         for i in range(9):
-            #print("check row {}: {}".format(i, sudoku[:, 0]))
+            if i == a:
+                # Skip this value, since it was already checked
+                continue
             if self._chk_line(sudoku[i, :]) == False:
                 return False
         for i in range(9):
-            #print("check col {}: {}".format(i, sudoku[:, 0]))
+            if i == b:
+                # Skip this value, since it was already checked
+                continue
             if self._chk_line(sudoku[:, i]) == False:
                 return False
         for box in np.hsplit(sudoku, 3):
@@ -47,7 +54,7 @@ class SudokuSolver:
                     for k in range(1, 10):
                         # Try a number in the next empty spot
                         self.puzzle[i, j] = k
-                        if self._chk_sudoku(self.puzzle) == True:
+                        if self._chk_sudoku(self.puzzle, i, j) == True:
                             if np.unique(self.puzzle)[0] != 0:
                                 # There are no 0s left, we found a solution
                                 success = True
