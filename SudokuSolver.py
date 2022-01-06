@@ -24,25 +24,19 @@ class SudokuSolver:
         return True
 
     def _chk_sudoku(self, sudoku, a, b):
-        # check the current row and column first
+        # check the current row and column
         if self._chk_line(sudoku[a, :]) == False or self._chk_line(sudoku[:, b]) == False:
             return False
-        for i in range(9):
-            if i == a:
-                # Skip this value, since it was already checked
-                continue
-            if self._chk_line(sudoku[i, :]) == False:
-                return False
-        for i in range(9):
-            if i == b:
-                # Skip this value, since it was already checked
-                continue
-            if self._chk_line(sudoku[:, i]) == False:
-                return False
-        for box in np.hsplit(sudoku, 3):
-            for smallbox in np.vsplit(box, 3):
-                if self._chk_line(smallbox.ravel()) == False:
-                    return False
+
+        # Find the box that needs to be checked
+        a_start = (a // 3) * 3
+        a_end = a_start + 3
+        b_start = (b // 3) * 3
+        b_end = b_start + 3
+        box = sudoku[a_start:a_end, b_start:b_end]
+        if self._chk_line(box.ravel()) == False:
+            return False
+
         return True
         
     def _try_number(self):
